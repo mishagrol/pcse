@@ -4,6 +4,7 @@
 from math import exp
 from collections import deque
 from array import array
+import numpy as np
 
 from ..traitlets import Float, Int, Instance
 from ..decorators import prepare_rates, prepare_states
@@ -254,6 +255,7 @@ class WOFOST_Leaf_Dynamics(SimulationObject):
         params = self.params
         rates = self.rates
         states = self.states
+        k = self.kiosk
 
         # --------- leave death ---------
         tLV = array('d', states.LV)
@@ -278,6 +280,15 @@ class WOFOST_Leaf_Dynamics(SimulationObject):
 
         # Integration of physiological age
         tLVAGE = deque([age + rates.FYSAGE for age in tLVAGE])
+
+        # Uniformly reduce leaf biomass in case of reallocation
+        if k.REALLOC_LV > 0:
+            sumLV = sum(tLV)
+            if k.REALLOC_LV < sumLV:
+                ReductionFactorLV = (sumLV - k.REALLOC_LV)/sumLV
+                tLV = np.array(tLV) * ReductionFactorLV
+
+        # Convert to deques for efficient appending
         tLV = deque(tLV)
         tSLA = deque(tSLA)
 
