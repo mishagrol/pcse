@@ -115,8 +115,10 @@ class Wofost(SimulationObject):
         CVR = Float(-99.)
         CVS = Float(-99.)
         REALLOC_DVS = Float()
-        REALLOC_SHOOT_FRACTION = Float()
-        REALLOC_RATE = Float()
+        REALLOC_STEM_FRACTION = Float()
+        REALLOC_LEAF_FRACTION = Float()
+        REALLOC_STEM_RATE = Float()
+        REALLOC_LEAF_RATE = Float()
         REALLOC_LOSS = Float()
 
     class StateVariables(StatesTemplate):
@@ -236,11 +238,11 @@ class Wofost(SimulationObject):
             r.REALLOC_SO = 0.0
         else:
             if self._WST_REALLOC is None:  # Start of reallocation, compute max reallocatable biomass
-                self._WST_REALLOC = k.WST * p.REALLOC_SHOOT_FRACTION
-                self._WLV_REALLOC = k.WLV * p.REALLOC_SHOOT_FRACTION
+                self._WST_REALLOC = k.WST * p.REALLOC_STEM_FRACTION
+                self._WLV_REALLOC = k.WLV * p.REALLOC_LEAF_FRACTION
             # Reallocation rate in terms of loss of stem/leaf dry matter
-            r.REALLOC_LV = self._WLV_REALLOC * p.REALLOC_RATE
-            r.REALLOC_ST = self._WST_REALLOC * p.REALLOC_RATE
+            r.REALLOC_LV = self._WLV_REALLOC * p.REALLOC_LEAF_RATE
+            r.REALLOC_ST = self._WST_REALLOC * p.REALLOC_STEM_RATE
             # Reallocation rate in terms of increase in storage organs taking
             # into account CVL/CVO ratio, CVS/CVO ratio and losses due to respiration
             r.REALLOC_SO = (r.REALLOC_LV/p.CVL + r.REALLOC_ST/p.CVS) * p.CVO * (1.0 - p.REALLOC_LOSS)
