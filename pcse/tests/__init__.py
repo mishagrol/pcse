@@ -9,11 +9,11 @@ from . import test_abioticdamage
 from . import test_partitioning
 from . import test_evapotranspiration
 from . import test_respiration
-from . import test_wofost
+#from . import test_wofost
 from . import test_penmanmonteith
-from . import test_agromanager
-from . import test_wofost_npk
-from . import test_lintul3
+#from . import test_agromanager
+#from . import test_wofost_npk
+#from . import test_lintul3
 
 def make_test_suite(dsn=None):
     """Assemble test suite and return it
