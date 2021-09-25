@@ -160,6 +160,8 @@ class CSVWeatherDataProvider(WeatherDataProvider):
     def _read_meta(self, csv_file):
         header = {}
         for line in csv_file:
+            if line.startswith('## Site Characteristics'):
+                continue
             if line.startswith('## Daily weather observations'):
                 break
             statements = line.split(';')
